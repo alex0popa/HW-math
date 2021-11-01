@@ -78,10 +78,10 @@ const App = () => {
       {list}
       <div className="btns">
         <button className="btn-verify" onClick={verify}>
-          Verify
+          Verifica
         </button>
         <button className="btn-generate" onClick={generate}>
-          Genarate
+          Genera nuova lista
         </button>
       </div>
     </div>
