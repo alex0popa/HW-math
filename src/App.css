@@ -1,0 +1,41 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  text-align: center;
+
+}
+
+.row {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+}
+
+.inp {
+  width: 30px;
+  margin-left: 5px
+}
+
+.btn-verify {
+  width: 100px;
+  background-color: fuchsia;
+}
+
+.btn-generate {
+  width: 100px;
+  background-color: darkcyan;
+}
+
+.btns {
+  width: 210px;
+  display: flex;
+  justify-content: space-between;
+  justify-self: center;
+}
+
+.end-result {
+  margin-left: 15px;
+  border-radius: 30%;
+}
