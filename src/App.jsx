@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
+
 import './App.css';
+
+import Emoji from "react-emoji-render";
 
 const OPERATIONS = ['-', '+'];
 
@@ -47,21 +50,19 @@ const App = () => {
   };
 
   const onChange = (e) => {
-    const { value, name: i } = e.target;
+    const value = Number(e.target.value);
+    const i = Number(e.target.name);
 
-    setHumanRes(pr => [...pr.slice(0, +i), +value, ...pr.slice(+i + 1)]);
+    !isNaN(value) && setHumanRes(
+      pr => [...pr.slice(0, i), value, ...pr.slice(i + 1)]
+    );
   };
 
   const list = expressions.map((expression, i) => 
     <div key={i} className="row">
       <p>{expression}</p>
       <input className="inp" value={humanRes[i]} onChange={onChange} name={i} />
-      <h3
-        className="end-result"
-        style={{ backgroundColor: endResults[i] === 'RIGHT' ? 'green' : 'red'}}
-      >
-        {endResults[i]}
-      </h3>
+      {endResults[i]}
     </div>  
   );
 
@@ -69,7 +70,7 @@ const App = () => {
     humanRes.includes('')
       ? alert('Per favore inserisci tutti i risultati...')
       : setEndResults(results.map(
-        (result, i) => result === humanRes[i] ? 'RIGHT' : 'WRONG'
+        (result, i) => <Emoji text={ result !== humanRes[i] ? ':-1:' : '❤️'} />
       ));
   };
 
