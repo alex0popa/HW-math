@@ -4,11 +4,14 @@ import { Container } from "./Elements";
 
 export const Generator = ({ setShowGenerator, generate }) => {
   const [input, setInput] = useState(10);
+  const [withChange, setWithChange] = useState(true);
   const disabled = input < 10;
+
+  const handleSubtraction = () => setWithChange(!withChange);
 
   const handleClick = () => {
     if (input >= 10) {
-      generate(input);
+      generate(input, withChange);
       setShowGenerator(false);
     }
   };
@@ -45,6 +48,24 @@ export const Generator = ({ setShowGenerator, generate }) => {
           Ok
         </button>
       </div>
+      <p>Sottrazioni: </p>
+      <span>
+
+        <label>Con cambio</label>
+        <input
+          type="checkbox"
+          checked={withChange}
+          onClick={handleSubtraction}
+        />
+      </span>
+      <span>
+        <label>Senza cambio</label>
+        <input
+          type="checkbox"
+          checked={!withChange}
+          onClick={handleSubtraction}
+        />
+      </span>
     </Container>
   );
 ;}

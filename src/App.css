@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   text-align: center;
 }
 
@@ -30,6 +30,8 @@
 .btns {
   width: 210px;
   display: flex;
+  margin-top: 2rem;
+  margin-left: 43%;
   justify-content: space-between;
   justify-self: center;
 }

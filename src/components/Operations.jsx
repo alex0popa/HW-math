@@ -6,7 +6,7 @@ import { Generator } from './Generator';
 import '../App.css';
 
 
-const OPERATIONS = ['-', '+'];
+const OPERATIONS = ['+', '-'];
 const COLORS = ['blue', 'red'];
 
 const colorNr = (nr, i) => <span style={{ color: COLORS[i] }}>{nr}</span>
@@ -22,10 +22,10 @@ const formatStr = (n1, n2, opType) => {
   )
 }
 
-const generateOperations = (max) => [...Array(20)].reduce(
-  accumulator => {
+const generateOperations = (max, withChange) => [...Array(40)].reduce(
+  (accumulator, _, i) => {
     // random oparation: addition/subtraction
-    const opType = Math.floor(Math.random() * 2);
+    const isSubtraction = i % 2;
 
     // random first number
     let n1 = Math.floor(Math.random() * max + 1);
@@ -34,19 +34,24 @@ const generateOperations = (max) => [...Array(20)].reduce(
     let n2 = Math.floor(Math.random() * (max + 1));
 
     //  if addition, make sure it doesn't go beyond n
-    while(opType && n1 + n2 > max) {
+    while(!isSubtraction && n1 + n2 > max) {
+      n2 = Math.floor(Math.random() * (max + 1));
+    }
+
+    // subtractions without exchange
+    while (!withChange && isSubtraction && (n1 < n2 || n1 % 10 < n2 % 10)) {
       n2 = Math.floor(Math.random() * (max + 1));
     }
 
     // if subtraction, first number must be the largest
-    !opType && n1 < n2 && ([n1, n2] = [n2, n1]);
+    isSubtraction && n1 < n2 && ([n1, n2] = [n2, n1]);
 
     const str = max > 100 || max <= 10 ?  (
-      <h3>{`${n1} ${OPERATIONS[opType]} ${n2} = `}</h3>
+      <h3>{`${n1} ${OPERATIONS[isSubtraction]} ${n2} = `}</h3>
     ) : (
-      formatStr(n1, n2, opType)
+      formatStr(n1, n2, isSubtraction)
     );
-    const res = opType ? n1 + n2 : n1 - n2;
+    const res = isSubtraction ? n1 + n2 : n1 - n2;
 
     accumulator.expressions.push(str);
     accumulator.results.push(res);
@@ -58,18 +63,18 @@ const generateOperations = (max) => [...Array(20)].reduce(
 
 export const Operations = () => {
   const [showGenerator, setShowGenerator] = useState(true);
-  const [humanRes, setHumanRes] = useState(Array(20).fill(''));
-  const [endResults, setEndResults] = useState(Array(20).fill(''));
   const [{ expressions, results }, setOperations] = useState({
     expressions: [],
     results: []
   });
+  const [endResults, setEndResults] = useState(Array(40).fill(''));
+  const [humanRes, setHumanRes] = useState(Array(40).fill(''));
   
-  const generate = (n) => {
+  const generate = (n, withChange) => {
     setShowGenerator(!showGenerator);
     setHumanRes(endResults.map(_ => ''));
     setEndResults(endResults.map(_ => ''));
-    setOperations(generateOperations(n));
+    setOperations(generateOperations(n, withChange));
   };
 
   const onChange = (e) => {
@@ -98,31 +103,36 @@ export const Operations = () => {
   };
 
   return (
-    <div className="grid">
-      {list}
+    <>
+     
       {showGenerator ? (
         <Generator
           setShowGenerator={setShowGenerator}
           generate={generate}
         />
       ) : (
-        <div className="btns">
-          <button
-            className="btn-verify"
-            onClick={verify}
-            style={{ borderRadius: '20px', cursor: 'pointer' }}
-          >
-            Verifica
-          </button>
-          <button
-            className="btn-generate"
-            onClick={() => setShowGenerator(true)}
-            style={{ borderRadius: '20px', cursor: 'pointer' }}
-          >
-            Genera nuova lista
-          </button>
-        </div>
+        <>
+          <div className="grid">
+            {list}
+          </div>
+          <div className="btns">
+            <button
+              className="btn-verify"
+              onClick={verify}
+              style={{ borderRadius: '20px', cursor: 'pointer' }}
+            >
+              Verifica
+            </button>
+            <button
+              className="btn-generate"
+              onClick={() => setShowGenerator(true)}
+              style={{ borderRadius: '20px', cursor: 'pointer' }}
+            >
+              Genera nuova lista
+            </button>
+          </div>
+        </>
     )}
-    </div>
+    </>
   );
 };
