@@ -7,6 +7,20 @@ import '../App.css';
 
 
 const OPERATIONS = ['-', '+'];
+const COLORS = ['blue', 'red'];
+
+const colorNr = (nr, i) => <span style={{ color: COLORS[i] }}>{nr}</span>
+
+const formatStr = (n1, n2, opType) => {
+  const firstNr = String(n1).split('').reverse().map(colorNr).reverse();
+  const secondNr = String(n2).split('').reverse().map(colorNr).reverse();
+
+  return (
+    <h3>
+      {firstNr} {OPERATIONS[opType]} {secondNr}{' = '}
+    </h3>
+  )
+}
 
 const generateOperations = (max) => [...Array(20)].reduce(
   accumulator => {
@@ -27,7 +41,11 @@ const generateOperations = (max) => [...Array(20)].reduce(
     // if subtraction, first number must be the largest
     !opType && n1 < n2 && ([n1, n2] = [n2, n1]);
 
-    const str = `${n1} ${OPERATIONS[opType]} ${n2} = `;
+    const str = max > 100 || max <= 10 ?  (
+      <h3>{`${n1} ${OPERATIONS[opType]} ${n2} = `}</h3>
+    ) : (
+      formatStr(n1, n2, opType)
+    );
     const res = opType ? n1 + n2 : n1 - n2;
 
     accumulator.expressions.push(str);
