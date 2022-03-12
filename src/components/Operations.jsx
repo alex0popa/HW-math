@@ -51,7 +51,7 @@ const generateOperations = (max, withChange) => [...Array(40)].reduce(
     ) : (
       formatStr(n1, n2, isSubtraction)
     );
-    const res = isSubtraction ? n1 + n2 : n1 - n2;
+    const res = isSubtraction ? n1 - n2 : n1 + n2;
 
     accumulator.expressions.push(str);
     accumulator.results.push(res);
